@@ -5,8 +5,8 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 
 const products = [
-  { title: 'Dead Space', price: 1400, img: 'Img/DeadSpace.jpg' },
-  { title: 'Mass Effect Definitive edition', price: 1600, img: 'Img/MassEffect.jpg' },
+  { title: 'Dead Space', price: 1400, img: 'Img/DeadSpace.jpg', stripeUrl: 'https://buy.stripe.com/test_5kAeWFeG65lT6K4cMN' },
+  { title: 'Mass Effect Definitive edition', price: 1600, img: 'Img/MassEffect.jpg', stripeUrl: 'https://buy.stripe.com/test_8wM15P55weWt9WgdQQ' },
   { title: 'Stardew Valley', price: 600, img: 'Img/StarDewValley.jpg' },
   { title: 'Stellaries', price: 1400, img: 'img/Stellaries.jpg' },
   { title: 'Persona 5 Royal', price: 1200, img: 'Img/OIP.jpg' },
@@ -21,6 +21,10 @@ const Store = () => {
   const addToCart = (product) => {
     setCartItems([...cartItems, product]);
     setShowToast(true);
+  };
+
+  const redirectToStripe = (stripeUrl) => {
+    window.open(stripeUrl, '_blank'); // Abre la URL en una nueva pestaña
   };
 
   return (
@@ -50,7 +54,11 @@ const Store = () => {
                 <Card.Body>
                   <Card.Title>{product.title}</Card.Title>
                   <Card.Text>{product.price}$</Card.Text>
-                  <Button variant="primary" onClick={() => addToCart(product)}>AÑADIR AL CARRITO</Button>
+                  {product.stripeUrl ? (
+                    <Button variant="primary" onClick={() => redirectToStripe(product.stripeUrl)}>COMPRAR AHORA</Button>
+                  ) : (
+                    <Button variant="primary" onClick={() => addToCart(product)}>AÑADIR AL CARRITO</Button>
+                  )}
                 </Card.Body>
               </Card>
             </Col>
